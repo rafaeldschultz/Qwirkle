@@ -1,4 +1,4 @@
 #include "infoBlock.h"
 
 Block ** createBoard();
-void eraseBoard(Board * tafel);
+void eraseBoard(Game * g);

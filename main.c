@@ -1,20 +1,25 @@
 #include<stdio.h>
 
-#include "headers/infoBoard.h"
+/*Structs*/
+#include "headers/infoGame.h"
+#include "headers/infoBlock.h"
+
 #include "headers/board.h"
 #include "headers/output.h"
-
-#include "headers/infoBlock.h"
+#include "headers/game.h"
 
 int main(int argc, char *argv[]){
     //tafel = tabuleiro em alemao
-    Board tafel;
+    Game g;
     
-    createBoard(&tafel);
+    welcome();
+    createBoard(&g);
+    Player *p = initializePlayers(&g);
 
-    showBoard(&tafel);
-
-    eraseBoard(&tafel);
-
+    showBoard(&g);
+    showPlayersTiles(g, p);
+    
+    deletePlayers(g, p);
+    eraseBoard(&g);
     return 0;
 }

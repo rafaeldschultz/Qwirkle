@@ -2,25 +2,25 @@
 #include<stdlib.h>
 
 #include "headers/infoBlock.h"
-#include "headers/infoBoard.h"
+#include "headers/infoGame.h"
 
-void createBoard(Board * tafel){
-    Block **board = (Block **) malloc(BOARD_DIM * sizeof(Block *));
+void createBoard(Game *g){
+    Block **b = (Block **) malloc(sizeof(Block *));
 
-    for(short i = 0; i < BOARD_DIM; i++){
-        board[i] = (Block *) calloc(BOARD_DIM, sizeof(Block)); 
+    for(short i = 0; i < 1; i++){
+        b[i] = (Block *) calloc(1, sizeof(Block)); 
     }
 
-    tafel->tabuleiro = board;
+    g->board = b;
 
-    tafel->max_x = 0;
-    tafel->max_y = 0;
+    g->max_lin = 0;
+    g->max_col = 0;
 }
 
-void eraseBoard(Board * tafel){
-    for(short i = 0; i < BOARD_DIM; i++){
-        free(tafel->tabuleiro[i]); 
+void eraseBoard(Game * g){
+    for(short i = 0; i < g->max_col; i++){
+        free(g->board[i]); 
     }
     
-    free(tafel->tabuleiro);
+    free(g->board);
 }

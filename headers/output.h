@@ -1,3 +1,7 @@
-#include "infoBoard.h"
+#include "infoGame.h"
+#include "infoPlayer.h"
 
-void showBoard(Board * tafel);
+void welcome();
+void showBoard(Game * g);
+void numberToColor(short n);
+void showPlayersTiles(Game g, Player *players);
