@@ -8,6 +8,7 @@ typedef struct{
     short max_col;
     short max_lin;
     int n_players;
+    short ** blocksControl;
 } Game;
 
 #endif

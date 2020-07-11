@@ -8,17 +8,8 @@
 
 #include "headers/colors.h"
 #include "headers/buffer.h"
+#include "headers/blocks.h"
 
-Block * drawBlocks(){
-    Block * b = (Block *) malloc(HAND_LENGTH * sizeof(Block));
-    srand(time(0));
-
-    for(short i = 0; i < HAND_LENGTH; i++){
-        b[i].letter = 'A' + (rand() % 6);
-        b[i].number = 1 + (rand() % 6); 
-    }
-    return b;
-}
 
 void deletePlayers(Game g, Player *p){
     for(int i = 0; i < (g.n_players); i++){
@@ -49,7 +40,7 @@ Player * initializePlayers(Game *g){
         char *espaco = strchr(p[i].name, '\n');
         *espaco = '\0';
         
-        p[i].tiles = drawBlocks();
+        p[i].tiles = drawBlocks(g);
     }
 
     return p;
