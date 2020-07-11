@@ -8,6 +8,7 @@
 #include "headers/output.h"
 #include "headers/players.h"
 #include "headers/blocks.h"
+#include "headers/game.h"
 
 int main(int argc, char *argv[]){
     Game g;
@@ -20,6 +21,8 @@ int main(int argc, char *argv[]){
     
     showBoard(&g);
     showPlayersTiles(g, p);
+    
+    gameRounds(&g, p);
     
     deleteBlocksControl(&g);
     deletePlayers(g, p);

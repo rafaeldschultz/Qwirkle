@@ -16,11 +16,14 @@ output.o: output.c
 buffer.o: buffer.c
 	gcc -c buffer.c -o buffer.o
 
+game.o: game.c 
+	gcc -c game.c -o game.o
+
 main.o: main.c
 	gcc -c main.c -o main.o
 
-qwirkle: colors.o board.o output.o main.o buffer.o players.o blocks.o
-	gcc colors.o board.o output.o main.o buffer.o players.o blocks.o -o qwirkle
+qwirkle: colors.o board.o output.o main.o buffer.o players.o blocks.o game.o
+	gcc colors.o board.o output.o main.o buffer.o players.o blocks.o game.o -o qwirkle
 
 all: qwirkle
 	
