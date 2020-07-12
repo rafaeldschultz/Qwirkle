@@ -171,6 +171,45 @@ short verifyDuplicatesJoinedHorizontal(Game *g, int lin, int col){
     return 1;
 }
 
+short verifySameLine(Game *g, int lin, int col, short f_lin, short f_col ){
+    Block first = g->board[f_lin][f_col];
+    
+    if(f_lin == lin){
+        if(col > f_col){
+            while(g->board[lin][col - 1].letter != '\0'){
+                if((g->board[lin][col - 1].letter == first.letter) && (g->board[lin][col - 1].number == first.number)){
+                    return 1;
+                }
+                col--;
+            }
+        } else {
+            while(g->board[lin][col + 1].letter != '\0'){
+                if((g->board[lin][col + 1].letter == first.letter) && (g->board[lin][col + 1].number == first.number)){
+                    return 1;
+                }
+                col++;
+            }
+        }
+    } else {
+        if(lin > f_lin){
+            while(g->board[lin - 1][col].letter != '\0'){
+                if((g->board[lin - 1][col].letter == first.letter) && (g->board[lin - 1][col].number == first.number)){
+                    return 1;
+                }
+                lin--;
+            }
+        } else {
+            while(g->board[lin + 1][col].letter != '\0'){
+                if((g->board[lin + 1][col].letter == first.letter) && (g->board[lin + 1][col].number == first.number)){
+                    return 1;
+                }
+                lin++;
+            }
+        }
+    }
+    return 0;
+}
+
 short verifyMoviment(Game *g, Block b, int lin, int col, short *f_lin, short *f_col, short *lt){
     //0: indefinido; 1: letra; 2: numero
 
@@ -193,7 +232,11 @@ short verifyMoviment(Game *g, Block b, int lin, int col, short *f_lin, short *f_
             invalidMove();
             return 0;
         }
-        
+       
+        if(!verifySameLine(g, lin, col, *f_lin, *f_col)){
+            invalidMove();
+            return 0;
+        }
     } 
 
     short isPossible_up = 0, isPossible_down = 0, isPossible_left = 0, isPossible_right = 0;
