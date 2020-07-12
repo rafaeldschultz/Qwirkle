@@ -19,9 +19,6 @@ int main(int argc, char *argv[]){
     
     Player *p = initializePlayers(&g);
     
-    showBoard(&g);
-    showPlayersTiles(g, p);
-    
     gameRounds(&g, p);
     
     deleteBlocksControl(&g);

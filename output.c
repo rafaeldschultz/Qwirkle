@@ -45,14 +45,38 @@ void welcome(){
 }
 
 void showOnePlayerTiles(Player p){
-    green(1);
+    green(0);
     printf("Pecas: ");
-
     for(short i = 0; i < 6; i++){
-        numberToColor(p.tiles[i].number);
-        printf("%c%hd ", p.tiles[i].letter, p.tiles[i].number);
+        if(p.tiles[i].letter != '\0'){
+            numberToColor(p.tiles[i].number);
+            printf("%c%hd ", p.tiles[i].letter, p.tiles[i].number);
+        }
     }
-    printf("\n\n");
+    printf("\n");
+}
+
+void playerOptions(){
+    blue(0);
+    printf("Opcoes: \n");
+
+    blue(1);
+    printf("\t - jogar");
+    reset();
+    yellow(1);
+    printf(" peca");
+    purple(1);
+    printf(" linha coluna\n");
+    blue(1);
+    printf("\t - trocar");
+    reset();
+    yellow(1);
+    printf(" peca\n");
+    blue(1);
+    printf("\t - passar\n\n");
+    blue(1);
+    printf("Selecione:   ");
+    reset();
 }
 
 void showPlayersTiles(Game g, Player *players){
@@ -129,4 +153,32 @@ void showBoard(Game *g){
         printf(" %3hd", j);
     }
     printf("\n");
+}
+
+void invalidBlock(short a){
+    red(1);
+    if(a == 0){
+        printf("\nPeca inserida invalida!\n\n");
+    } else {
+        printf("\nVoce nao possui essa peca!\n\n");
+    }
+    reset();
+}
+
+void invalidPosition(){
+    red(1);
+    printf("\nPosicao Invalida!\n\n");
+    reset();
+}
+
+void invalidOption(){
+    red(1);
+    printf("\nOpcao invalida!\n\n");
+    reset();
+}
+
+void invalidMove(){
+    red(1);
+    printf("\nMovimento invalido!\n\n");
+    reset();
 }
