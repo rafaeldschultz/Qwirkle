@@ -5,29 +5,41 @@
 #include "headers/infoBlock.h"
 #include "headers/infoGame.h"
 #include "headers/players.h"
+#include "headers/infoBag.h"
 
-short ** createBlocksControl(){
-    short ** blocksControl = (short **) malloc(6 * sizeof(short *));
+Bag createBag(){
+    Bag bag;
+    bag.blocksControl = (short **) malloc(6 * sizeof(short *));
     
     for(short i = 0; i < 6; i++){
-        blocksControl[i] = (short *) calloc(6, sizeof(short));
+        bag.blocksControl[i] = (short *) calloc(6, sizeof(short));
     }
-    return blocksControl;
+
+    bag.blocks_number = BLOCKS_TOTAL_NUMBER;
+    return bag;
+}
+
+void decrementBag(Game *g){
+    g->bag.blocks_number--;
+}
+
+void incrementBag(Game *g){
+    g->bag.blocks_number++;
 }
 
 void deleteBlocksControl(Game *g){
     for(short i = 0; i < 6; i++){
-        free(g->blocksControl[i]);
+        free(g->bag.blocksControl[i]);
     }
-    free(g->blocksControl);
+    free(g->bag.blocksControl);
 }
 
 short verifyBlock(Game *g, Block b){
     int letter_pos = b.letter - 'A';
     int number_pos = b.number - 1;
     
-    if(g->blocksControl[letter_pos][number_pos] < 3){
-        g->blocksControl[letter_pos][number_pos]++;
+    if(g->bag.blocksControl[letter_pos][number_pos] < 3){
+        g->bag.blocksControl[letter_pos][number_pos]++;
         return 0;
     }
 
@@ -56,6 +68,7 @@ Block * drawBlocks(Game *g){
 
             error = verifyBlock(g, b[i]);
         }
+        decrementBag(g);
     }
     return b;
 }
@@ -72,6 +85,8 @@ Block drawOneBlock(Game *g){
 
         error = verifyBlock(g, b);
     }
+
+    decrementBag(g);
     return b;
 }
 
@@ -91,7 +106,7 @@ void removeBlockFromHand(Player *players, short player_number, Block b){
             players[player_number].tiles[i].relation.horizontal = 0;
             players[player_number].tiles[i].relation.vertical = 0;
             break;
-        }
+        }   
     }
 }
 
@@ -101,7 +116,8 @@ void changeBlock(Game *g, Player *players, short player_number, Block b){
     short letter_pos = b.letter - 'A';
     short number_pos = b.number - 1;
 
-    (g->blocksControl[letter_pos][number_pos])--;
+    (g->bag.blocksControl[letter_pos][number_pos])--;
+    (g->bag.blocks_number)++;
 
     for(short i = 0; i < 6; i++){
         if(players[player_number].tiles[i].letter == '\0'){

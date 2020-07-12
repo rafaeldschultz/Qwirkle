@@ -8,6 +8,7 @@
 typedef struct{
     char name[NAME_LENGTH];
     Block *tiles; 
+    int score;
 } Player;
 
 #endif

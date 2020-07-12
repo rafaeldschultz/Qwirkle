@@ -37,10 +37,11 @@ Player * initializePlayers(Game *g){
         reset();
         fgets(p[i].name, NAME_LENGTH, stdin);
 
-        char *espaco = strchr(p[i].name, '\n');
-        *espaco = '\0';
+        char *enter = strchr(p[i].name, '\n');
+        *enter = '\0';
         
         p[i].tiles = drawBlocks(g);
+        p[i].score = 0;
     }
 
     return p;

@@ -12,3 +12,4 @@ void invalidPosition();
 void invalidOption(short n);
 void invalidMove();
 void cheatModeMenu();
+void noMoreBlocksBag();

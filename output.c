@@ -191,3 +191,9 @@ void cheatModeMenu(){
     printf("Cheat Mode (S/N): ");
     reset();
 }
+
+void noMoreBlocksBag(){
+    yellow(1);
+    printf("\nNao ha mais pecas para serem distribuidas!\n\n");
+    reset();
+}

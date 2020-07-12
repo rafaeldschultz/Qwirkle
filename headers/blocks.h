@@ -1,9 +1,12 @@
 #include<stdio.h>
 
 #include "infoBlock.h"
+#include "infoBag.h"
 
 Block * drawBlocks(Game *g);
-short ** createBlocksControl();
+Bag createBag();
+void decrementFromBag(Game *g);
+
 void deleteBlocksControl(Game *g);
 short verifyPlayerHand(Player p, Block b);
 void removeBlockFromHand(Player *players, short player_number, Block b);

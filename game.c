@@ -11,6 +11,21 @@
 #include "headers/buffer.h"
 #include "headers/blocks.h"
 
+int verifyEndGame(Game *g, Player *players){
+    for(short i = 0; i < g->n_players; i++){
+        short j;
+        for(j = 0; j < HAND_LENGTH; j++){
+            if(players[i].tiles[j].letter != '\0'){
+                break;
+            }
+        }
+        if(j == HAND_LENGTH){
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int makeMoviment(Game *g, Block b, int lin, int col, short *f_lin, short *f_col){
     g->board[lin][col] = b;
 
@@ -577,22 +592,28 @@ int playerTurn(Game *g, Player *players, short player_number, char isCheatMode){
                     b.letter = cmd[0];
                     b.number = (short) atoi(&cmd[1]);
                     
-                    if(verifyPlayerHand(players[player_number], b)){
-                        if(p_option == 0 ||  p_option == 2){
-                            changeBlock(g, players, player_number, b);
-                            p_option = 2;
+                    if(g->bag.blocks_number > 0){
+                        if(verifyPlayerHand(players[player_number], b)){
+                            if(p_option == 0 ||  p_option == 2){
+                                changeBlock(g, players, player_number, b);
+                                p_option = 2;
+                            } else {
+                                invalidOption(1);
+                            }
                         } else {
-                            invalidOption(1);
+                            invalidBlock(1);
                         }
                     } else {
-                        invalidBlock(1);
+                        noMoreBlocksBag();
                     }
                 } else {
                     invalidBlock(0);
                 }
             }
         } else if(!strcmp(cmd, "passar")) {
-            completeBlocksNumber(g, players, player_number);
+            if(g->bag.blocks_number > 0){
+                completeBlocksNumber(g, players, player_number);
+            }
             break;
         } else {
             invalidOption(0);
@@ -616,6 +637,10 @@ void gameRounds(Game *g, Player *p){
             while(!result){
                 playerTurn(g, p, i, isCheatMode);
                 i = (++i) % (g->n_players);
+
+                if(g->bag.blocks_number == 0){
+                    result = verifyEndGame(g, p);
+                }
             }
             break;
         } else {

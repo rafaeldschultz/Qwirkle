@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
     Game g;
     welcome();
     createBoard(&g);
-    g.blocksControl = createBlocksControl();
+    g.bag = createBag();
     
     Player *p = initializePlayers(&g);
     
