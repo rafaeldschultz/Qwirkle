@@ -7,16 +7,14 @@
 #include "headers/players.h"
 #include "headers/infoBag.h"
 
-Bag createBag(){
-    Bag bag;
-    bag.blocksControl = (short **) malloc(6 * sizeof(short *));
+void createBag(Game *g){
+    g->bag.blocksControl = (short **) malloc(6 * sizeof(short *));
     
     for(short i = 0; i < 6; i++){
-        bag.blocksControl[i] = (short *) calloc(6, sizeof(short));
+        g->bag.blocksControl[i] = (short *) calloc(6, sizeof(short));
     }
 
-    bag.blocks_number = BLOCKS_TOTAL_NUMBER;
-    return bag;
+    g->bag.blocks_number = BLOCKS_TOTAL_NUMBER;
 }
 
 void decrementBag(Game *g){

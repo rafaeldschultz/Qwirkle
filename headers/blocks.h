@@ -4,7 +4,7 @@
 #include "infoBag.h"
 
 Block * drawBlocks(Game *g);
-Bag createBag();
+void createBag(Game *g);
 void decrementFromBag(Game *g);
 
 void deleteBlocksControl(Game *g);

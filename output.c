@@ -5,6 +5,63 @@
 
 #include "headers/colors.h"
 
+/***************
+ * Boas-vindas *
+ ***************/
+
+/*
+ * Imprime logo do jogo alem de instrucoes iniciais
+ */
+void welcome(){
+    red(5);
+    printf("\n\t\t    Q");
+    yellow(5);
+    printf("W");
+    green(5);
+    printf("I");
+    blue(5);
+    printf("R");
+    purple(5);
+    printf("K");
+    cyan(5);
+    printf("L");
+    red(5);
+    printf("E");
+    yellow(5);
+    printf("!");
+    green(5);
+    printf("!\n\n");
+    reset();
+
+    printf("\t   Para comecar, indique as\n");
+    blue(0);
+    printf("\t informacoes sobre os jogadores.\n\n");
+    reset();
+}
+
+
+/*********************
+ * Mensagens de erro *
+ *********************/
+
+/*
+ * Informa que a quantidade de jogadores informada eh invalida
+ */
+void invalidNumberPlayers(){
+    red(1);
+    printf("\nQuantidade inválida de jogadores. Permitido: 1 - 4 jogadores\n\n");
+    reset();
+}
+
+/*
+ * Informa erro quando nao for possivel alocar memoria
+ */
+void errorAllocation(){
+    red(1);
+    printf("Nao ha memoria suficiente! Finalizando...");
+    reset();
+}
+
 void numberToColor(short n){
     switch (n){
         case 1: blue(5);
@@ -22,27 +79,6 @@ void numberToColor(short n){
     }
 }
 
-void welcome(){
-    red(1);
-    printf("\n\t    Q");
-    yellow(1);
-    printf("W");
-    green(1);
-    printf("I");
-    blue(1);
-    printf("R");
-    purple(1);
-    printf("K");
-    cyan(1);
-    printf("L");
-    red(1);
-    printf("E");
-    yellow(1);
-    printf("!");
-    green(1);
-    printf("!\n\n");
-    reset();
-}
 
 void showOnePlayerTiles(Player p){
     green(0);

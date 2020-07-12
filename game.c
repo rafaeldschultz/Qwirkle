@@ -10,6 +10,31 @@
 #include "headers/output.h"
 #include "headers/buffer.h"
 #include "headers/blocks.h"
+#include "headers/board.h"
+#include "headers/players.h"
+
+
+/********************************************
+ * Inicializa e Deleta os elementos do jogo *
+ ********************************************/
+
+/*
+ * Inicializa o Jogo
+ */
+void createGame(Game *g, Player **p){
+    createBoard(g);
+    createBag(g);
+    initializePlayers(g, p);
+}
+
+/*
+ * Deleta os Elementos do Jogo
+ */
+void deleteGame(Game *g, Player **p){
+    deleteBlocksControl(g);
+    deletePlayers(*g, *p);
+    eraseBoard(g);
+}
 
 int verifyEndGame(Game *g, Player *players){
     for(short i = 0; i < g->n_players; i++){

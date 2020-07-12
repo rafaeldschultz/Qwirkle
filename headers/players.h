@@ -1,6 +1,5 @@
 #include "infoGame.h"
 #include "infoPlayer.h"
 
-Player * initializePlayers(Game *g);
+void initializePlayers(Game *g, Player **players);
 void deletePlayers(Game g, Player *p);
-

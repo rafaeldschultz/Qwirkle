@@ -1,7 +1,18 @@
 #include "infoGame.h"
 #include "infoPlayer.h"
 
+/***************
+ * Boas-vindas *
+ ***************/
 void welcome();
+
+/*********************
+ * Mensagens de erro *
+ *********************/
+void invalidNumberPlayers();
+void errorAllocation();
+
+
 void showBoard(Game * g);
 void numberToColor(short n);
 void showPlayersTiles(Game g, Player *players);

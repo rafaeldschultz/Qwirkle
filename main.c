@@ -1,32 +1,25 @@
-#include<stdio.h>
-#include<time.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 
-/*Structs*/
+/*Arquivos com Structs*/
 #include "headers/infoGame.h"
 #include "headers/infoBlock.h"
 
-#include "headers/board.h"
 #include "headers/output.h"
-#include "headers/players.h"
-#include "headers/blocks.h"
 #include "headers/game.h"
 
 int main(int argc, char *argv[]){
-    srand(time(0));
+    srand(time(0));             //Determina a semente para a função rand() como o tempo atual
+    welcome();                  //Imprime mensagens de Boas-Vindas
 
-    Game g;
-    welcome();
-    createBoard(&g);
-    g.bag = createBag();
+    Game g;                     
+    Player *p = NULL;
+    createGame(&g, &p);         //Cria os membros do jogo
     
-    Player *p = initializePlayers(&g);
+    gameRounds(&g, p);          //Inicia as rodadas do jogo
     
-    gameRounds(&g, p);
-    
-    deleteBlocksControl(&g);
-    deletePlayers(g, p);
-    eraseBoard(&g);
+    deleteGame(&g, &p);         //Deleta o jogo
 
     return 0;
 }
