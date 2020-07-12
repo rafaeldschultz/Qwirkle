@@ -45,7 +45,6 @@ short verifyPlayerHand(Player p, Block b){
 
 Block * drawBlocks(Game *g){
     Block * b = (Block *) malloc(HAND_LENGTH * sizeof(Block));
-    srand(time(NULL));
 
     for(short i = 0; i < HAND_LENGTH; i++){
         short error = 1;
@@ -61,3 +60,53 @@ Block * drawBlocks(Game *g){
     return b;
 }
 
+Block drawOneBlock(Game *g){
+    Block b;
+
+    short error = 1;
+    while(error){
+        b.letter = 'A' + (rand() % 6);
+        b.number = 1 + (rand() % 6);
+        b.relation.vertical = 0;
+        b.relation.horizontal = 0;
+
+        error = verifyBlock(g, b);
+    }
+    return b;
+}
+
+void completeBlocksNumber(Game *g, Player *players, short player_number){
+    for(short i = 0; i < 6; i++){
+        if(players[player_number].tiles[i].letter == '\0'){
+            players[player_number].tiles[i] = drawOneBlock(g);
+        }
+    }
+}
+
+void removeBlockFromHand(Player *players, short player_number, Block b){
+    for(short i = 0; i < 6; i++){
+        if(players[player_number].tiles[i].letter == b.letter && players[player_number].tiles[i].number == b.number){
+            players[player_number].tiles[i].letter = '\0';
+            players[player_number].tiles[i].number = 0;
+            players[player_number].tiles[i].relation.horizontal = 0;
+            players[player_number].tiles[i].relation.vertical = 0;
+            break;
+        }
+    }
+}
+
+void changeBlock(Game *g, Player *players, short player_number, Block b){
+    removeBlockFromHand(players, player_number, b);
+
+    short letter_pos = b.letter - 'A';
+    short number_pos = b.number - 1;
+
+    (g->blocksControl[letter_pos][number_pos])--;
+
+    for(short i = 0; i < 6; i++){
+        if(players[player_number].tiles[i].letter == '\0'){
+            players[player_number].tiles[i] = drawOneBlock(g);
+            break;
+        }
+    }
+}

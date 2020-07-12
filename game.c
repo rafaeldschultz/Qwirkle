@@ -60,7 +60,6 @@ int makeMoviment(Game *g, Block b, int lin, int col){
             g->board[i][0] = empty;
         }
     }
-
 }
 
 short verifyDuplicates(Game *g, Block b, int lin, int col){
@@ -108,13 +107,15 @@ short verifyDuplicates(Game *g, Block b, int lin, int col){
     return 1;
 }
 
-void verifyMoviment(Game *g, Block b, int lin, int col){
+short verifyMoviment(Game *g, Block b, int lin, int col){
     //0: indefinido; 1: letra; 2: numero
 
     if(g->max_col == 0 && g->max_lin == 0){     //Primeira Rodada; Pode ser adicionado em qualquer local
         makeMoviment(g, b, lin, col);
+        return 1;
     } else if(g->board[lin][col].letter != '\0'){
         invalidMove();
+        return 0;
     } else {
         short isPossible_up = 0, isPossible_down = 0, isPossible_left = 0, isPossible_right = 0;
         Block up, down, left, right;
@@ -294,6 +295,7 @@ void verifyMoviment(Game *g, Block b, int lin, int col){
                     }
                     
                     makeMoviment(g, b, lin, col);
+                    return 1;
                 } else {
                     invalidMove();
                 }
@@ -304,9 +306,11 @@ void verifyMoviment(Game *g, Block b, int lin, int col){
             invalidMove();
         }
     }
+    return 0;
 }
 
 int playerTurn(Game *g, Player *players, short player_number){
+    short p_option = 0;
     do {
         showBoard(g);
         showPlayersTiles(*g, players);
@@ -353,9 +357,17 @@ int playerTurn(Game *g, Player *players, short player_number){
                             if(*cmd >= '0' && *cmd <= ('0' + g->max_col)){
                                 int col = atoi(cmd);
                                 
-                                b.relation.vertical = 0;
-                                b.relation.horizontal = 0;
-                                verifyMoviment(g, b, lin, col);
+                                if(p_option == 0 || p_option == 1){
+                                    b.relation.vertical = 0;
+                                    b.relation.horizontal = 0;
+                                    short mov_suc = verifyMoviment(g, b, lin, col);
+                                    if(mov_suc){
+                                        removeBlockFromHand(players, player_number, b);
+                                    }
+                                    p_option = 1;
+                                } else {
+                                    invalidOption(1);
+                                }
                             } else {
                                 invalidPosition();
                             }
@@ -371,10 +383,34 @@ int playerTurn(Game *g, Player *players, short player_number){
             } else {
                 invalidBlock(0);
             }
+        } else if(!strcmp(cmd, "trocar")){
+            cmd = strtok(NULL, " ");
+
+            Block b;
+            if(strlen(cmd) == 2){
+                if(cmd[0] >= 'A' && cmd[0] <= 'F' && cmd[1] >= '1' && cmd[1] <= '6'){
+                    b.letter = cmd[0];
+                    b.number = (short) atoi(&cmd[1]);
+                    
+                    if(verifyPlayerHand(players[player_number], b)){
+                        if(p_option == 0 ||  p_option == 2){
+                            changeBlock(g, players, player_number, b);
+                            p_option = 2;
+                        } else {
+                            invalidOption(1);
+                        }
+                    } else {
+                        invalidBlock(1);
+                    }
+                } else {
+                    invalidBlock(0);
+                }
+            }
         } else if(!strcmp(cmd, "passar")) {
+            completeBlocksNumber(g, players, player_number);
             break;
         } else {
-            invalidOption();
+            invalidOption(0);
         }
     } while (1);
 }

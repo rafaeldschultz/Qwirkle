@@ -9,5 +9,5 @@ void showOnePlayerTiles(Player p);
 void playerOptions();
 void invalidBlock(short a);
 void invalidPosition();
-void invalidOption();
+void invalidOption(short n);
 void invalidMove();

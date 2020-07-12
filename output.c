@@ -81,7 +81,7 @@ void playerOptions(){
 
 void showPlayersTiles(Game g, Player *players){
     blue(1);
-    printf("\n\t    PEÇAS\n\n");
+    printf("\n\t     PEÇAS\n\n");
     
     for(short i = 0; i < g.n_players; i++){
         blue(1);
@@ -89,11 +89,13 @@ void showPlayersTiles(Game g, Player *players){
         reset();
 
         for(short j = 0; j < 6; j++){
-            printf(" ");
-            numberToColor(players[i].tiles[j].number);
-            printf("%c", players[i].tiles[j].letter);
-            printf("%hd", players[i].tiles[j].number);
-            reset();
+            if(players[i].tiles[j].letter != '\0'){
+                printf(" ");
+                numberToColor(players[i].tiles[j].number);
+                printf("%c", players[i].tiles[j].letter);
+                printf("%hd", players[i].tiles[j].number);
+                reset();
+            }
         }
         
         printf("\n\n");
@@ -171,9 +173,10 @@ void invalidPosition(){
     reset();
 }
 
-void invalidOption(){
+void invalidOption(short n){
     red(1);
-    printf("\nOpcao invalida!\n\n");
+    if(n == 0) printf("\nOpcao invalida!\n\n");
+    else printf("\nVoce pode realizar apenas um tipo de jogada por rodada!\n\n");
     reset();
 }
 

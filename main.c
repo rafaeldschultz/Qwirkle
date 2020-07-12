@@ -1,4 +1,6 @@
 #include<stdio.h>
+#include<time.h>
+#include<stdlib.h>
 
 /*Structs*/
 #include "headers/infoGame.h"
@@ -11,8 +13,9 @@
 #include "headers/game.h"
 
 int main(int argc, char *argv[]){
+    srand(time(0));
+
     Game g;
-    
     welcome();
     createBoard(&g);
     g.blocksControl = createBlocksControl();
