@@ -185,3 +185,9 @@ void invalidMove(){
     printf("\nMovimento invalido!\n\n");
     reset();
 }
+
+void cheatModeMenu(){
+    green(1);
+    printf("Cheat Mode (S/N): ");
+    reset();
+}

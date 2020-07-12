@@ -309,7 +309,7 @@ short verifyMoviment(Game *g, Block b, int lin, int col){
     return 0;
 }
 
-int playerTurn(Game *g, Player *players, short player_number){
+int playerTurn(Game *g, Player *players, short player_number, char isCheatMode){
     short p_option = 0;
     do {
         showBoard(g);
@@ -346,9 +346,9 @@ int playerTurn(Game *g, Player *players, short player_number){
                     b.letter = cmd[0];
                     b.number = (short) atoi(&cmd[1]);
                     
-                    if(verifyPlayerHand(players[player_number], b)){
+                    if(isCheatMode == 'S'){
                         cmd = strtok(NULL, " ");
-                        
+                            
                         if(*cmd >= '0' && *cmd <= ('0' + g->max_lin)){
                             int lin = atoi(cmd);
                             
@@ -375,7 +375,37 @@ int playerTurn(Game *g, Player *players, short player_number){
                             invalidPosition();
                         }
                     } else {
-                        invalidBlock(1);
+                        if(verifyPlayerHand(players[player_number], b)){
+                            cmd = strtok(NULL, " ");
+                            
+                            if(*cmd >= '0' && *cmd <= ('0' + g->max_lin)){
+                                int lin = atoi(cmd);
+                                
+                                cmd = strtok(NULL, " ");
+                                
+                                if(*cmd >= '0' && *cmd <= ('0' + g->max_col)){
+                                    int col = atoi(cmd);
+                                    
+                                    if(p_option == 0 || p_option == 1){
+                                        b.relation.vertical = 0;
+                                        b.relation.horizontal = 0;
+                                        short mov_suc = verifyMoviment(g, b, lin, col);
+                                        if(mov_suc){
+                                            removeBlockFromHand(players, player_number, b);
+                                        }
+                                        p_option = 1;
+                                    } else {
+                                        invalidOption(1);
+                                    }
+                                } else {
+                                    invalidPosition();
+                                }
+                            } else {
+                                invalidPosition();
+                            }
+                        } else {
+                            invalidBlock(1);
+                        }
                     }
                 } else {
                     invalidBlock(0);
@@ -415,12 +445,26 @@ int playerTurn(Game *g, Player *players, short player_number){
     } while (1);
 }
 
-void gameRounds(Game *g, Player *p){
-    short result = 0;
+void gameRounds(Game *g, Player *p){ 
+    do{
+        cheatModeMenu();
+        char isCheatMode = fgetc(stdin);
+        cleanBufferEnter();
+        if(isCheatMode == 's' || isCheatMode == 'n') {
+            isCheatMode -= 32;
+        }
+    
+        if(isCheatMode == 'S' || isCheatMode == 'N'){
+            short result = 0;
 
-    int i = 0;
-    while(!result){
-        playerTurn(g, p, i);
-        i = (++i) % (g->n_players);
-    }
+            int i = 0;
+            while(!result){
+                playerTurn(g, p, i, isCheatMode);
+                i = (++i) % (g->n_players);
+            }
+            break;
+        } else {
+            invalidOption(0);
+        }
+    } while(1);
 }
