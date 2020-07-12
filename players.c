@@ -15,18 +15,6 @@
 #include "headers/blocks.h"
 
 /*
- * Libera a memória utilizada para armazenas os usuarios
- * Executada ao final do programa
- */
-void deletePlayers(Game g, Player *p){
-    for(int i = 0; i < (g.n_players); i++){
-        free(p[i].tiles);                   //Libera cada a lista de blocos dos jogadores
-    }
-
-    free(p);                                //Libera os jogadores
-}
-
-/*
  * Inicializa todos os jogadores
  */
 void initializePlayers(Game *g, Player **players){
@@ -72,4 +60,16 @@ void initializePlayers(Game *g, Player **players){
     } else {
         invalidNumberPlayers();
     }         
+}
+
+/*
+ * Libera a memória utilizada para armazenas os usuarios
+ * Executada ao final do programa
+ */
+void deletePlayers(Game g, Player *p){
+    for(int i = 0; i < (g.n_players); i++){
+        free(p[i].tiles);                   //Libera cada a lista de blocos dos jogadores
+    }
+
+    free(p);                                //Libera os jogadores
 }
