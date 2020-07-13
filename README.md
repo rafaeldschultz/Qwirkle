@@ -5,10 +5,10 @@ Uma versão em C do jogo de tabuleiro norte americano Qwirkle. Criado como parte
 
 > Membros do grupo em ordem de pontuação: Rafael Dalonso Schultz (11800945) e Ricardo Monteiro Barbosa (11800604).
 
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org) [![Matéria](https://img.shields.io/badge/mat%C3%A9ria-SSC601-brightgreen)](https://github.com/badges/badgerbadgerbadger)
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org) [![Matéria](https://img.shields.io/badge/mat%C3%A9ria-SSC601-brightgreen)](https://github.com/badges/badgerbadgerbadger) [![Universidade](https://img.shields.io/badge/universidade-USP-orange)](https://github.com/badges/badgerbadgerbadger)
 
 
-![Jogo](https://i.imgur.com/QOcZWEq.gif)
+![Jogo](http://g.recordit.co/0z9DpVGPIa.gif)
 
 ---
 
@@ -35,7 +35,7 @@ A pontuação e a dinâmica do jogo foram feitas conforme as regras do original.
 
 Além disso, tal como o original, o programa permite colocar múltiplas filas na vez do jogador, desde que tenham a mesma cor ou forma e mesma linha (tocam-se), e esse jogador é pontuado somando os valores unitários das peças existentes na fila mais a peça que colocou. Por fim, caso seja detectado um QWIRKLE!, isto é, o preenchimento completo de uma fila com seis cores ou letras, o usuário responsável por completar recebe um bônus de seis pontos.
 
-![Qwirkle](https://i.ibb.co/zrTFcC3/Vanilla-1s-288px.gif)
+![Qwirkle](https://i.ibb.co/j5WLxn0/Vanilla-0-4s-289px-2.gif)
 
 O jogo continua até não houver mais blocos na bolsa. Então, continua até um dos jogadores não possuir mais nenhuma ficha em sua mão. Esse jogador recebe, também, um bônus de seis pontos. Finalmente, são verificadas as pontuações, e vence o jogador que mais pontuou.
 
@@ -66,10 +66,14 @@ A codificação do jogo se deu de forma organizada, por meio de diversos arquivo
 > Arquivo com os códigos de cores (representadas também por números)
 
 - game.c
-> Arquivo que lida com a jogabilidade em si. Possui funções verificadoras, pontuadoras e de rodadas dos jogadores
+> Arquivo que lida com a jogabilidade em si. Possui funções de rodadas dos jogadores e de verificação
 
 - players.c
 > Arquivo que lida com os jogadores, partindo de sua definição (quantidade, nome) 
+
+- pontuacao.c
+> Arquivo que lida com a pontuação dos jogadores, analisando eixos horizontais e verticais e buscando por QWIRKLES!
+
 
 ---
 
