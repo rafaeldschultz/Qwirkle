@@ -31,7 +31,7 @@ O usuário preenche, então, o número de jogadores e seus nomes, pelos quais se
 
 ![Opcoes](https://i.ibb.co/3CgytRB/image.png)
 
-**OBS.: a jogada pode ser feita em comandos reduzidos (ex.: j em vez de jogar, t em vez de trocar e p em vez de passar.**
+**OBS.: a jogada pode ser feita em comandos reduzidos (ex.: j em vez de jogar, t em vez de trocar e p em vez de passar).**
 
 A pontuação e a dinâmica do jogo foram feitas conforme as regras do original. A ordem da jogada individual segue a alocação de peças, pontuação da jogada e retirada de peças da “sacola” para manter 6 peças em mão. Não se pode alocar fichas individuais, todas devem estar “coladas”, isto é, formando filas entre si.
 
