@@ -12,7 +12,6 @@
 #include "headers/output.h"
 #include "headers/blocks.h"
 #include "headers/board.h"
-#include "headers/blocks.h"
 
 /*
  * Inicializa todos os jogadores

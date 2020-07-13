@@ -1,26 +1,46 @@
 #include "infoGame.h"
 #include "infoPlayer.h"
 
+
+/*************
+ * CONVERSAO *
+ *************/
+void numberToColor(short n);
+
+
 /***************
- * Boas-vindas *
+ * BOAS-VINDAS *
  ***************/
 void welcome();
 
+
 /*********************
- * Mensagens de erro *
+ * MENSAGENS DE ERRO *
  *********************/
 void invalidNumberPlayers();
 void errorAllocation();
-
-
-void showBoard(Game * g);
-void numberToColor(short n);
-void showPlayersTiles(Game g, Player *players);
-void showOnePlayerTiles(Player p);
-void playerOptions();
+void noMoreBlocksBag();
+void invalidMove();
 void invalidBlock(short a);
 void invalidPosition();
 void invalidOption(short n);
-void invalidMove();
+
+
+/*********
+ * MENUS *
+ *********/
+void playerOptions();
 void cheatModeMenu();
-void noMoreBlocksBag();
+
+
+/******************
+ * MOSTRAR BLOCOS *
+ ******************/
+void showBoard(Game * g);
+void showPlayersTiles(Game g, Player *players);
+void showOnePlayerTiles(Player p);
+
+
+
+
+

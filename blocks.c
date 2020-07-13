@@ -146,8 +146,10 @@ Block * drawBlocks(Game *g){
  */
 void completeBlocksNumber(Game *g, Player *p){
     for(short i = 0; i < 6; i++){
-        if(p->tiles[i].letter == '\0'){     //verifica se o bloco de posicao i na mao do jogador eh vazio
-            p->tiles[i] = drawOneBlock(g);  //Se sim, sorteia uma peca
+        if(p->tiles[i].letter == '\0'){         //verifica se o bloco de posicao i na mao do jogador eh vazio
+            if(g->bag.blocks_number > 0){       //verifica se existem blocos na sacola
+                p->tiles[i] = drawOneBlock(g);  //Se sim, sorteia uma peca
+            }
         }
     }
 }
@@ -183,7 +185,7 @@ void changeBlock(Game *g, Player *p, Block b){
     short number_pos = b.number - 1;
 
     (g->bag.blocksControl[letter_pos][number_pos])--;           //Subtrai um da quantidade disponivel no jogo (ja que a peca volta para o saco)
-    (g->bag.blocks_number)++;                                   //Adiciona uma peca a quantidade disponivel na sacola
+    incrementBag(g);                                            //Adiciona uma peca a quantidade disponivel na sacola
 
     completeBlocksNumber(g, p);                                 //Sorteia um novo bloco
 }
