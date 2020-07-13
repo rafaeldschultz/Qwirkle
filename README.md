@@ -31,6 +31,8 @@ O usuário preenche, então, o número de jogadores e seus nomes, pelos quais se
 
 ![Opcoes](https://i.ibb.co/3CgytRB/image.png)
 
+**OBS.: a jogada pode ser feita em comandos reduzidos (ex.: j em vez de jogar, t em vez de trocar e p em vez de passar).**
+
 A pontuação e a dinâmica do jogo foram feitas conforme as regras do original. A ordem da jogada individual segue a alocação de peças, pontuação da jogada e retirada de peças da “sacola” para manter 6 peças em mão. Não se pode alocar fichas individuais, todas devem estar “coladas”, isto é, formando filas entre si.
 
 Além disso, tal como o original, o programa permite colocar múltiplas filas na vez do jogador, desde que tenham a mesma cor ou forma e mesma linha (tocam-se), e esse jogador é pontuado somando os valores unitários das peças existentes na fila mais a peça que colocou. Por fim, caso seja detectado um QWIRKLE!, isto é, o preenchimento completo de uma fila com seis cores ou letras, o usuário responsável por completar recebe um bônus de seis pontos.
@@ -78,7 +80,7 @@ A codificação do jogo se deu de forma organizada, por meio de diversos arquivo
 ---
 
 ### Grupo
-> Membros do grupo em ordem de pontuação:
+**Membros do grupo em ordem de pontuação:**
 - Rafael Dalonso Schultz (11800945)
 - Ricardo Monteiro Barbosa (11800604)
 
