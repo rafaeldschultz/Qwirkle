@@ -157,14 +157,14 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
                                             int score1 = 0;
                                         
                                             if(line_turn == 1){
-                                                if(g->board[m.lin][m.col].relation.vertical != 0){
+                                                if(g->board[m.lin][m.col].relation.vertical != 0){              //Se existir ramificação da linha da jogada, verifica pontuacao
                                                     score1 = defineScoreUp(g, m) + defineScoreDown(g, m) - 1;
-                                                    if(score1 == 6) score1 += 6;                              //Fez um Qwirkle
+                                                    if(score1 == 6) score1 += 6;                                //Fez um Qwirkle
                                                 }
-                                            } else if(line_turn == 2) {
+                                            } else if(line_turn == 2) {                                         //Se existir ramificação da linha da jogada, verifica pontuacao
                                                 if(g->board[m.lin][m.col].relation.horizontal != 0){
                                                     score1 = defineScoreLeft(g, m) + defineScoreRight(g, m) - 1;
-                                                    if(score1 == 6) score1 += 6;                              //Fez um Qwirkle
+                                                    if(score1 == 6) score1 += 6;                                //Fez um Qwirkle
                                                 }
                                             }
                                             score += score1;
@@ -219,13 +219,14 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
                 if(g->bag.blocks_number > 0){                                   //verifica se existem pecas na sacola disponiveis
                     completeBlocksNumber(g, &players[player_number]);           //se sim, completa com as pecas que faltam
                 }
-                score += defineScoreFirstMove(g, firstMove);
+                score += defineScoreFirstMove(g, firstMove);                    //Verifica pontuacao da peca inicial
                 
+                //caso a peca inicial faca parte apenas de uma linha/coluna, subtrai um do valor do score (score eh calculado considerando que faz parte de uma linha e uma coluna)
                 if(!((g->board[firstMove.lin][firstMove.col].relation.horizontal != 0) && (g->board[firstMove.lin][firstMove.col].relation.vertical != 0))){
                     score--;
                 }
 
-                players[player_number].score += score;
+                players[player_number].score += score;                          //soma o score da rodada ao do jogador
                 showScoreTurn(score, players[player_number]);
                 printf("───────────────────────────────────────────────────\n");
                 return;
