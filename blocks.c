@@ -4,123 +4,186 @@
 
 #include "headers/infoBlock.h"
 #include "headers/infoGame.h"
-#include "headers/players.h"
 #include "headers/infoBag.h"
 
+#include "headers/output.h"
+#include "headers/players.h"
+#include "headers/board.h"
+
+
+/******************
+ * BAG WITH TILES *
+ ******************/
+
+/*
+ * Aloca na heap o controle da quantidade de blocos de cada tipo no jogo
+ * Linhas da matriz indicam a letra e colunas o numero do bloco
+ * Podem existir no maximo 3 blocos iguais
+ */
 void createBag(Game *g){
-    g->bag.blocksControl = (short **) malloc(6 * sizeof(short *));
-    
-    for(short i = 0; i < 6; i++){
-        g->bag.blocksControl[i] = (short *) calloc(6, sizeof(short));
+    g->bag.blocksControl = (short **) malloc(6 * sizeof(short *));  //aloca um ponteiro de ponteiros do tipo short e tam = 6 na heap
+    if(g->bag.blocksControl == NULL){                               //verifica se foi alocado com sucesso
+        errorAllocation();
+        eraseBoard(g);                                              //Desaloca o que ja havia sido alocado
+        exit(1);
     }
 
-    g->bag.blocks_number = BLOCKS_TOTAL_NUMBER;
+    for(short i = 0; i < 6; i++){
+        g->bag.blocksControl[i] = (short *) calloc(6, sizeof(short));   //aloca e inicializa todas as posicoes da matriz de controle com valores nulos
+        
+        if(g->bag.blocksControl == NULL){
+            errorAllocation();
+            free(g->bag.blocksControl);
+            eraseBoard(g);                                          //Desaloca o que ja havia sido alocado
+            exit(1);
+        }
+    }
+
+    g->bag.blocks_number = BLOCKS_TOTAL_NUMBER;                     //Atribui a quantidade de blocos disponiveis o total no jogo (padrao = 108 pecas)
 }
 
-void decrementBag(Game *g){
-    g->bag.blocks_number--;
+/*
+ * Libera da memoria o controle de blocos distribuidos
+ */
+void deleteBlocksControl(Game *g){
+    for(short i = 0; i < 6; i++){      
+        free(g->bag.blocksControl[i]);  //libera as colunas
+    }
+    free(g->bag.blocksControl);         //libera as linhas
 }
 
+/*
+ * Incrementa a quantidade de blocos na sacola
+ */
 void incrementBag(Game *g){
     g->bag.blocks_number++;
 }
 
-void deleteBlocksControl(Game *g){
-    for(short i = 0; i < 6; i++){
-        free(g->bag.blocksControl[i]);
-    }
-    free(g->bag.blocksControl);
+/*
+ * Decrementa o numero de blocos na sacola
+ */
+void decrementBag(Game *g){
+    g->bag.blocks_number--;
 }
 
+
+/****************
+ * VERIFICACOES *
+ ****************/
+
+/*
+ * Verifica se o bloco esta disponivel para ser sorteado
+ * Utilizado pelas funcoes de sorteio de blocos
+ */
 short verifyBlock(Game *g, Block b){
-    int letter_pos = b.letter - 'A';
-    int number_pos = b.number - 1;
+    int letter_pos = b.letter - 'A';                        //Descobre a posicao na matriz da letra (linha)
+    int number_pos = b.number - 1;                          //Descobre a posicao na matriz da letra (coluna)
     
-    if(g->bag.blocksControl[letter_pos][number_pos] < 3){
-        g->bag.blocksControl[letter_pos][number_pos]++;
+    if(g->bag.blocksControl[letter_pos][number_pos] < 3){   //Verifica se a quantidade de pecas iguais a b no jogo eh menor que 3
+        g->bag.blocksControl[letter_pos][number_pos]++;     //Se sim, soma um a quantidade de pecas
         return 0;
     }
 
     return 1;
 }
 
+/* 
+ * Verifica se uma peca existe na mao de um jogador
+ */
 short verifyPlayerHand(Player p, Block b){
-    for(short i = 0; i < 6; i++){
+    for(short i = 0; i < 6; i++){                                               //Verifica todas as pecas
         if(b.letter == p.tiles[i].letter && b.number == p.tiles[i].number){
-            return 1;
+            return 1;                                                           //Se encontrar a peca, retorna 1
         }
     }
     return 0;
 }
 
-Block * drawBlocks(Game *g){
-    Block * b = (Block *) malloc(HAND_LENGTH * sizeof(Block));
 
-    for(short i = 0; i < HAND_LENGTH; i++){
-        short error = 1;
-        while(error){
-            b[i].letter = 'A' + (rand() % 6);
-            b[i].number = 1 + (rand() % 6);
-            b[i].relation.vertical = 0;
-            b[i].relation.horizontal = 0;
+/***********
+ * SORTEIO *
+ ***********/
 
-            error = verifyBlock(g, b[i]);
-        }
-        decrementBag(g);
-    }
-    return b;
-}
-
+/*
+ * Sorteia apenas uma peca
+ * Utilizado na funcao 'trocar' do jogo
+ */
 Block drawOneBlock(Game *g){
     Block b;
 
     short error = 1;
-    while(error){
-        b.letter = 'A' + (rand() % 6);
-        b.number = 1 + (rand() % 6);
-        b.relation.vertical = 0;
-        b.relation.horizontal = 0;
+    while(error){                                       //Sorteia ate o bloco ser valido
+        b.letter = 'A' + (rand() % 6);                  //Sorteia uma letra entre 'A' e 'F'
+        b.number = 1 + (rand() % 6);                    //Sorteia um numero entre 1 e 6
+        b.relation.vertical = 0;                        //Atribui 0 (indefinido) a relacao vertical, ja que nao esta no tabulerio
+        b.relation.horizontal = 0;                      //Atribui 0 (indefinido) a relacao horizontal, ja que nao esta no tabulerio
 
-        error = verifyBlock(g, b);
+        error = verifyBlock(g, b);                      //verifica se o bloco pode ser sorteado
     }
 
-    decrementBag(g);
+    decrementBag(g);                                    //Diminui um bloco da sacola
     return b;
 }
 
-void completeBlocksNumber(Game *g, Player *players, short player_number){
+/*
+ * Sorteia toda a mao de um jogador (padrao = 6 blocos)
+ */
+Block * drawBlocks(Game *g){
+    Block * b = (Block *) malloc(HAND_LENGTH * sizeof(Block));      //Aloca um vetor para armazenar as pecas do jogador
+    if(b == NULL){                                                  //Verifica por erros de alocacao
+        errorAllocation();
+        exit(0);
+    }
+
+    for(short i = 0; i < HAND_LENGTH; i++){             
+        b[i] = drawOneBlock(g);                                     //sorteia um bloco
+    }
+    return b;
+}
+
+/*
+ * Completa a mao do jogador a quantidade de pecas necessaria
+ */
+void completeBlocksNumber(Game *g, Player *p){
     for(short i = 0; i < 6; i++){
-        if(players[player_number].tiles[i].letter == '\0'){
-            players[player_number].tiles[i] = drawOneBlock(g);
+        if(p->tiles[i].letter == '\0'){     //verifica se o bloco de posicao i na mao do jogador eh vazio
+            p->tiles[i] = drawOneBlock(g);  //Se sim, sorteia uma peca
         }
     }
 }
 
-void removeBlockFromHand(Player *players, short player_number, Block b){
+
+/********************************
+ * ALTERAR BLOCOS DE UM JOGADOR *
+ ********************************/
+
+/*
+ * Remove um bloco da mao de um jogador 
+ */
+void removeBlockFromHand(Player *p, Block b){
     for(short i = 0; i < 6; i++){
-        if(players[player_number].tiles[i].letter == b.letter && players[player_number].tiles[i].number == b.number){
-            players[player_number].tiles[i].letter = '\0';
-            players[player_number].tiles[i].number = 0;
-            players[player_number].tiles[i].relation.horizontal = 0;
-            players[player_number].tiles[i].relation.vertical = 0;
+        if(p->tiles[i].letter == b.letter && p->tiles[i].number == b.number){       //Verifica se o bloco eh o procurado na mao do jogador
+            p->tiles[i].letter = '\0';                                              //Se sim, atribui vazio as suas propriedades
+            p->tiles[i].number = 0;
+            p->tiles[i].relation.horizontal = 0;
+            p->tiles[i].relation.vertical = 0;
             break;
         }   
     }
 }
 
-void changeBlock(Game *g, Player *players, short player_number, Block b){
-    removeBlockFromHand(players, player_number, b);
+/*
+ * Troca um bloco por outro de um jogador 
+ */
+void changeBlock(Game *g, Player *p, Block b){
+    removeBlockFromHand(p, b);                                  //Remove o bloco da mao do usuario
 
-    short letter_pos = b.letter - 'A';
+    //Encontra a posicao de seus termos na matriz de controle
+    short letter_pos = b.letter - 'A';                  
     short number_pos = b.number - 1;
 
-    (g->bag.blocksControl[letter_pos][number_pos])--;
-    (g->bag.blocks_number)++;
+    (g->bag.blocksControl[letter_pos][number_pos])--;           //Subtrai um da quantidade disponivel no jogo (ja que a peca volta para o saco)
+    (g->bag.blocks_number)++;                                   //Adiciona uma peca a quantidade disponivel na sacola
 
-    for(short i = 0; i < 6; i++){
-        if(players[player_number].tiles[i].letter == '\0'){
-            players[player_number].tiles[i] = drawOneBlock(g);
-            break;
-        }
-    }
+    completeBlocksNumber(g, p);                                 //Sorteia um novo bloco
 }

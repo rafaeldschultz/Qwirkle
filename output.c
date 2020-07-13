@@ -62,6 +62,8 @@ void errorAllocation(){
     reset();
 }
 
+
+
 void numberToColor(short n){
     switch (n){
         case 1: blue(5);

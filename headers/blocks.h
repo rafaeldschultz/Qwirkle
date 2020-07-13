@@ -3,13 +3,29 @@
 #include "infoBlock.h"
 #include "infoBag.h"
 
-Block * drawBlocks(Game *g);
+/******************
+ * BAG WITH TILES *
+ ******************/
 void createBag(Game *g);
+void deleteBlocksControl(Game *g);
+void incrementBag(Game *g);
 void decrementFromBag(Game *g);
 
-void deleteBlocksControl(Game *g);
+/****************
+ * VERIFICACOES *
+ ****************/
+short verifyBlock(Game *g, Block b);
 short verifyPlayerHand(Player p, Block b);
-void removeBlockFromHand(Player *players, short player_number, Block b);
-void completeBlocksNumber(Game *g, Player *players, short player_number);
+
+/***********
+ * SORTEIO *
+ ***********/
 Block drawOneBlock(Game *g);
-void changeBlock(Game *g, Player *players, short player_number, Block b);
+Block * drawBlocks(Game *g);
+void completeBlocksNumber(Game *g, Player *p);
+
+/********************************
+ * ALTERAR BLOCOS DE UM JOGADOR *
+ ********************************/
+void removeBlockFromHand(Player *p, Block b);
+void changeBlock(Game *g, Player *p, Block b);

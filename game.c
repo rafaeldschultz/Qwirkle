@@ -556,7 +556,7 @@ int playerTurn(Game *g, Player *players, short player_number, char isCheatMode){
                                     short mov_suc = verifyMoviment(g, b, lin, col, &firstMove_lin, &firstMove_col, &line_turn);
 
                                     if(mov_suc){
-                                        removeBlockFromHand(players, player_number, b);
+                                        removeBlockFromHand(&players[player_number], b);
                                     }
                                     p_option = 1;
                                 } else {
@@ -586,7 +586,7 @@ int playerTurn(Game *g, Player *players, short player_number, char isCheatMode){
                                         short mov_suc = verifyMoviment(g, b, lin, col, &firstMove_lin, &firstMove_col, &line_turn);
                                         
                                         if(mov_suc){
-                                            removeBlockFromHand(players, player_number, b);
+                                            removeBlockFromHand(&players[player_number], b);
                                         }
                                         p_option = 1;
                                     } else {
@@ -620,7 +620,7 @@ int playerTurn(Game *g, Player *players, short player_number, char isCheatMode){
                     if(g->bag.blocks_number > 0){
                         if(verifyPlayerHand(players[player_number], b)){
                             if(p_option == 0 ||  p_option == 2){
-                                changeBlock(g, players, player_number, b);
+                                changeBlock(g, &players[player_number], b);
                                 p_option = 2;
                             } else {
                                 invalidOption(1);
@@ -637,7 +637,7 @@ int playerTurn(Game *g, Player *players, short player_number, char isCheatMode){
             }
         } else if(!strcmp(cmd, "passar")) {
             if(g->bag.blocks_number > 0){
-                completeBlocksNumber(g, players, player_number);
+                completeBlocksNumber(g, &players[player_number]);
             }
             break;
         } else {
