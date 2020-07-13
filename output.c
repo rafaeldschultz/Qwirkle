@@ -151,19 +151,19 @@ void playerOptions(){
     printf("Opcoes: \n");
 
     blue(1);
-    printf("\t - jogar");
+    printf("\t - jogar [j]");
     reset();
     yellow(1);
     printf(" peca");
     purple(1);
     printf(" linha coluna\n");
     blue(1);
-    printf("\t - trocar");
+    printf("\t - trocar [t]");
     reset();
     yellow(1);
     printf(" peca\n");
     blue(1);
-    printf("\t - passar\n\n");
+    printf("\t - passar [p]\n\n");
 }
 
 /*
