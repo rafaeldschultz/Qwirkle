@@ -150,10 +150,22 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
 
                                     if(m_status){                               //Verifica se a jogada foi executada com sucesso
                                         p_option = 1;
-                                        if(line_turn == 1){
-                                            if(g->board[m.lin][m.col].relation.vertical != 0){
-                                                score += defineScoreUp(g, m) + defineScoreDown(g, m) - 1;
+                                        
+                                        if(line_turn != 0){
+                                            int score1 = 0;
+                                        
+                                            if(line_turn == 1){
+                                                if(g->board[m.lin][m.col].relation.vertical != 0){
+                                                    score1 = defineScoreUp(g, m) + defineScoreDown(g, m) - 1;
+                                                    if(score1 == 6) score1 += 6;                              //Fez um Qwirkle
+                                                }
+                                            } else if(line_turn == 2) {
+                                                if(g->board[m.lin][m.col].relation.horizontal != 0){
+                                                    score1 = defineScoreLeft(g, m) + defineScoreRight(g, m) - 1;
+                                                    if(score1 == 6) score1 += 6;                              //Fez um Qwirkle
+                                                }
                                             }
+                                            score += score1;
                                         }
                                         break;
                                     }

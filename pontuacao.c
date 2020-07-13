@@ -66,11 +66,26 @@ int defineScoreRight(Game *g, Move firstMove){
 
 
 int defineScoreFirstMove(Game *g, Move firstMove){
-    int score = -2;
-    score += defineScoreUp(g, firstMove);
-    score += defineScoreDown(g, firstMove);
-    score += defineScoreLeft(g, firstMove);
-    score += defineScoreRight(g, firstMove);
+    int score = 0, score1 = -1;
+    
+    score1 += defineScoreUp(g, firstMove);
+    score1 += defineScoreDown(g, firstMove);
+    
+    if(score1 == 6){
+        score1 += 6;                        //Fez um Qwirkle
+    }
+    
+    score += score1;
+    score1 = -1;
+    
+    score1 += defineScoreLeft(g, firstMove);
+    score1 += defineScoreRight(g, firstMove);
+
+    if(score1 == 6){
+        score1 += 6;                        //Fez um Qwirkle
+    }
+    
+    score += score1;
 
     return score;
 }
