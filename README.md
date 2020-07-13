@@ -35,7 +35,7 @@ A pontuação e a dinâmica do jogo foram feitas conforme as regras do original.
 
 Além disso, tal como o original, o programa permite colocar múltiplas filas na vez do jogador, desde que tenham a mesma cor ou forma e mesma linha (tocam-se), e esse jogador é pontuado somando os valores unitários das peças existentes na fila mais a peça que colocou. Por fim, caso seja detectado um QWIRKLE!, isto é, o preenchimento completo de uma fila com seis cores ou letras, o usuário responsável por completar recebe um bônus de seis pontos.
 
-![Qwirkle](https://i.ibb.co/zrTFcC3/Vanilla-1s-288px.gif)
+![Qwirkle](https://i.ibb.co/2v5rLk8/Vanilla-0-4s-289px-1.gif)
 
 O jogo continua até não houver mais blocos na bolsa. Então, continua até um dos jogadores não possuir mais nenhuma ficha em sua mão. Esse jogador recebe, também, um bônus de seis pontos. Finalmente, são verificadas as pontuações, e vence o jogador que mais pontuou.
 
