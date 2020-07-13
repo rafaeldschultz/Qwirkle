@@ -14,6 +14,7 @@
 #include "headers/blocks.h"
 #include "headers/board.h"
 #include "headers/players.h"
+#include "headers/pontuacao.h"
 
 #include "headers/game.h"
 
@@ -82,12 +83,11 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
     short p_option = 0;                          //Define o tipo de jogada selecionada (1:'jogar'; 2:'trocar')
     short line_turn = 0;                         //Indica o sentido da jogada (0: indefinido; 1: linha; 2: coluna)
     
+    int score = 0;                               //Armazena a pontuacao da jogada
+
     Move firstMove;                              //Armazena as coordenadas do primeiro movimento feito pelo jogador na rodada
     firstMove.col = -1;
     firstMove.lin = -1;
-
-    short firstMove_col = -1;
-    short firstMove_lin = -1;
 
     do {
         showBoard(g);
@@ -150,6 +150,11 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
 
                                     if(m_status){                               //Verifica se a jogada foi executada com sucesso
                                         p_option = 1;
+                                        if(line_turn == 1){
+                                            if(g->board[m.lin][m.col].relation.vertical != 0){
+                                                score += defineScoreUp(g, m) + defineScoreDown(g, m) - 1;
+                                            }
+                                        }
                                         break;
                                     }
                                 } else {
@@ -200,6 +205,15 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
                 if(g->bag.blocks_number > 0){                                   //verifica se existem pecas na sacola disponiveis
                     completeBlocksNumber(g, &players[player_number]);           //se sim, completa com as pecas que faltam
                 }
+                score += defineScoreFirstMove(g, firstMove);
+
+                if(!((g->board[firstMove.lin][firstMove.col].relation.horizontal != 0) && (g->board[firstMove.lin][firstMove.col].relation.vertical != 0))){
+                    score--;
+                }
+                
+                printf("SCORE: %d\n", score);
+
+                players[player_number].score += score;
                 return;
             } else {
                 invalidOption(0);

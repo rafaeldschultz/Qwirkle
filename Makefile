@@ -19,11 +19,14 @@ buffer.o: buffer.c
 game.o: game.c 
 	gcc -c game.c -o game.o
 
+pontuacao.o: pontuacao.c
+	gcc -c pontuacao.c -o pontuacao.o
+
 main.o: main.c
 	gcc -c main.c -o main.o
 
-qwirkle: colors.o board.o output.o main.o buffer.o players.o blocks.o game.o
-	gcc colors.o board.o output.o main.o buffer.o players.o blocks.o game.o -o qwirkle
+qwirkle: colors.o board.o output.o main.o buffer.o players.o blocks.o game.o pontuacao.o
+	gcc colors.o board.o output.o main.o buffer.o players.o blocks.o game.o pontuacao.o -o qwirkle
 
 all: qwirkle
 	
