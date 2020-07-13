@@ -17,48 +17,51 @@
  * Inicializa todos os jogadores
  */
 void initializePlayers(Game *g, Player **players){
-    green(1);
-    printf("Numero de jogadores: ");
-    reset();
+    do{
+        green(1);
+        printf("Numero de jogadores: ");
+        reset();
 
-    char n_player_c = fgetc(stdin);                     //Recebe o numero de jogadores
-    cleanBufferEnter();                                 //Limpa o buffer de entrada ate o enter
-    
-    if(n_player_c >= '1' && n_player_c <= '4'){
-        g->n_players = (short) atoi(&n_player_c);       //Se o valor for valido, armazena na struct Game
+        char n_player_c = fgetc(stdin);                     //Recebe o numero de jogadores
+        cleanBufferEnter();                                 //Limpa o buffer de entrada ate o enter
         
-        Player * p = (Player *) malloc((g->n_players) * sizeof(Player));    //Aloca na heap espaco para armenar as informacoes dos jogadores
-        
-        /*
-         * Verifica por erros de alocacao.
-         * Se erros, desaloca o que ja foi alocado e finaliza o programa.
-         */
-        if(p == NULL) {                                 
-            errorAllocation();
-            deleteBlocksControl(g);
-            eraseBoard(g);
-            exit(1);
-        }
-
-        for(int i = 0; i < (g->n_players); i++){        //Recebe as informacoes dos jogadores
-            green(1);
-            printf("Nome do Jogador ");
-            blue(1);
-            printf("#%d: ", i + 1);
-            reset();
-            fgets(p[i].name, NAME_LENGTH, stdin);       //Recebe o nome do jogador
-
-            char *enter = strchr(p[i].name, '\n');      //retira o enter ao final do nome dos jogadores
-            if(enter != NULL) *enter = '\0';            //Se encontrar enter, elimina-o da string
+        if(n_player_c >= '1' && n_player_c <= '4'){
+            g->n_players = (short) atoi(&n_player_c);       //Se o valor for valido, armazena na struct Game
             
-            p[i].tiles = drawBlocks(g);                 //sorteia blocos para os jogadores
-            p[i].score = 0;                             //atribui 0 ao score inicial
-        }
+            Player * p = (Player *) malloc((g->n_players) * sizeof(Player));    //Aloca na heap espaco para armenar as informacoes dos jogadores
+            
+            /*
+            * Verifica por erros de alocacao.
+            * Se erros, desaloca o que ja foi alocado e finaliza o programa.
+            */
+            if(p == NULL) {                                 
+                errorAllocation();
+                deleteBlocksControl(g);
+                eraseBoard(g);
+                exit(1);
+            }
 
-        *players = p;                                   //Atribui o ponteiro com os usuarios ao ponteiro players
-    } else {
-        invalidNumberPlayers();
-    }         
+            for(int i = 0; i < (g->n_players); i++){        //Recebe as informacoes dos jogadores
+                green(1);
+                printf("Nome do Jogador ");
+                blue(1);
+                printf("#%d: ", i + 1);
+                reset();
+                fgets(p[i].name, NAME_LENGTH, stdin);       //Recebe o nome do jogador
+
+                char *enter = strchr(p[i].name, '\n');      //retira o enter ao final do nome dos jogadores
+                if(enter != NULL) *enter = '\0';            //Se encontrar enter, elimina-o da string
+                
+                p[i].tiles = drawBlocks(g);                 //sorteia blocos para os jogadores
+                p[i].score = 0;                             //atribui 0 ao score inicial
+            }
+
+            *players = p;                                   //Atribui o ponteiro com os usuarios ao ponteiro players
+            break;
+        } else {
+            invalidNumberPlayers();
+        }
+    } while (1);
 }
 
 /*
