@@ -3,6 +3,8 @@
 #include "headers/infoGame.h"
 #include "headers/infoMove.h"
 #include "headers/infoBlock.h"
+#include "headers/infoPlayer.h"
+#include "headers/output.h"
 
 int defineScoreUp(Game *g, Move firstMove){
     Block first = g->board[firstMove.lin][firstMove.col];
@@ -64,7 +66,6 @@ int defineScoreRight(Game *g, Move firstMove){
     return i;
 }
 
-
 int defineScoreFirstMove(Game *g, Move firstMove){
     int score = 0, score1 = -1;
     
@@ -77,7 +78,7 @@ int defineScoreFirstMove(Game *g, Move firstMove){
     
     score += score1;
     score1 = -1;
-    
+
     score1 += defineScoreLeft(g, firstMove);
     score1 += defineScoreRight(g, firstMove);
 
@@ -88,4 +89,18 @@ int defineScoreFirstMove(Game *g, Move firstMove){
     score += score1;
 
     return score;
+}
+
+void winner(Game *g, Player *players){
+    int i;
+    int highScore = 0;
+    int userHighScore = 0;
+
+    for(i = 0; i < g->n_players; i++){
+        if(players[i].score > highScore){
+            highScore = players[i].score;
+            userHighScore = i;
+        }
+    }
+    showWinner(players[userHighScore]);
 }

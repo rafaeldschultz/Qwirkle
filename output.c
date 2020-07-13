@@ -276,3 +276,37 @@ void showBoard(Game *g){
     }
     printf("\n");
 }
+
+/*********************
+ * MOSTRAR PONTUACAO *
+ *********************/
+
+void showScore(Player p){
+    green(0);
+    printf("Score: ");
+    reset();
+    printf("%d\n", p.score);
+}
+
+void showScoreTurn(int score, Player p){
+    reset();
+    printf("\nVoce marcou ");
+    green(1);
+    printf("%d PONTO(S)", score);
+    reset();
+    printf(" nessa rodada. TOTAL: ");
+    green(1);
+    printf("%d\n\n", p.score);
+    reset();
+}
+
+/********************
+ * MOSTRAR VENCEDOR *
+ ********************/
+
+void showWinner(Player p){
+    green(1);
+    printf("\n\nPARABÉNS @%s !!!\n\n", p.name);
+    reset();
+    printf("Voce venceu o jogo com %d pontos!\n\n", p.score);
+}

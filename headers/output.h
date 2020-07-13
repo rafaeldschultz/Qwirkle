@@ -40,7 +40,16 @@ void showBoard(Game * g);
 void showPlayersTiles(Game g, Player *players);
 void showOnePlayerTiles(Player p);
 
+/*********************
+ * MOSTRAR PONTUACAO *
+ *********************/
+void showScore(Player p);
+void showScoreTurn(int score, Player p);
 
+/********************
+ * MOSTRAR VENCEDOR *
+ ********************/
+void showWinner(Player p);
 
 
 

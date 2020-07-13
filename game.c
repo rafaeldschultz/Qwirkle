@@ -98,6 +98,8 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
         green(1);
         printf("\tJOGADA DE @%s\n\n", players[player_number].name);         //Indica o Jogador da vez
         
+        //Mostra a pontuacao do jogar
+        showScore(players[player_number]);
         //Mostra os blocos do jogador
         showOnePlayerTiles(players[player_number]);                     //Mostra os blocos do jogador da vez
         
@@ -218,14 +220,14 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
                     completeBlocksNumber(g, &players[player_number]);           //se sim, completa com as pecas que faltam
                 }
                 score += defineScoreFirstMove(g, firstMove);
-
+                
                 if(!((g->board[firstMove.lin][firstMove.col].relation.horizontal != 0) && (g->board[firstMove.lin][firstMove.col].relation.vertical != 0))){
                     score--;
                 }
-                
-                printf("SCORE: %d\n", score);
 
                 players[player_number].score += score;
+                showScoreTurn(score, players[player_number]);
+                printf("───────────────────────────────────────────────────\n");
                 return;
             } else {
                 invalidOption(0);
@@ -396,7 +398,7 @@ short verifyMoviment(Game *g, Block b, Move m, Move *firstMove, short *lt){
                         isPossible_up = 1;
                     } else if(b.number == up.number) {      //Senao, se o numero coincidir com b define a relacao para 1
                         b.relation.vertical = 2;            
-                        up.relation.horizontal = 2;
+                        up.relation.vertical = 2;
                         isPossible_up = 1;
                     }
                 } else if(up.relation.vertical == 1){       //Se estiver definida como 1, verifica se as letras coincidem
@@ -426,7 +428,7 @@ short verifyMoviment(Game *g, Block b, Move m, Move *firstMove, short *lt){
                     } else if(b.number == down.number) {
                         if(b.relation.vertical != 1){
                             b.relation.vertical = 2;
-                            down.relation.horizontal = 2;
+                            down.relation.vertical = 2;
                             isPossible_down = 1;
                         }
                     }
@@ -515,16 +517,16 @@ short verifyMoviment(Game *g, Block b, Move m, Move *firstMove, short *lt){
             if(isPossible_down == 1 && isPossible_up == 1 && isPossible_right == 1 && isPossible_left == 1){
                 
                 if(verifyDuplicates(g, b, m)){          //Verifica se ira existir duplicadas na linha que sera inserida
-                    if(m.lin > 0){                      //Senao, verifica se a linha da jogada eh maior que 0
+                    if(m.lin > 0 && up.letter != '\0'){                      //Senao, verifica se a linha da jogada eh maior que 0
                         g->board[m.lin - 1][m.col].relation.vertical = up.relation.vertical;    //Se sim, atribui a nova relacao ao bloco acima
                     }
-                    if(m.lin < g->max_lin) {            //Verifica se a linha da jogada eh menor que a linha max do tabuleiro
+                    if(m.lin < g->max_lin && down.letter != '\0') {            //Verifica se a linha da jogada eh menor que a linha max do tabuleiro
                         g->board[m.lin + 1][m.col].relation.vertical = down.relation.vertical;  //Se sim, atribui a nova relacao ao bloco abaixo
                     }
-                    if(m.col > 0) {                     //Verifica se a coluna da jogada eh maior que 0
+                    if(m.col > 0 && left.letter != '\0') {                     //Verifica se a coluna da jogada eh maior que 0
                         g->board[m.lin][m.col - 1].relation.horizontal = left.relation.horizontal;  //Se sim, atribui a nova relacao ao bloco a esquerda
                     }
-                    if(m.col < g->max_col) {            //Verifica se a coluna da jogada eh menor que a coluna max do tabuleiro
+                    if(m.col < g->max_col && right.letter != '\0') {            //Verifica se a coluna da jogada eh menor que a coluna max do tabuleiro
                         g->board[m.lin][m.col + 1].relation.horizontal = right.relation.horizontal; //Se sim, atribui a nova relacao ao bloco a direita
                     }
                     
@@ -820,6 +822,8 @@ int verifyEndGame(Game *g, Player *players){
             }
         }
         if(j == HAND_LENGTH){                       //se o contador for igual a quantidade de pecas na mao do jogador (padrao: 6), existe um vencedor
+            players[i].score += 6;                  //bonus por finalizar as pecas
+            winner(g, players);
             return 1;
         }
     }
