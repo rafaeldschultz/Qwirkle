@@ -105,7 +105,6 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
         
         //Mostra as opcoes
         playerOptions();                                                //Mostra as opcoes para o jogador
-        
         do{
             blue(1);
             printf("Selecione:   ");
@@ -123,7 +122,7 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
             char *peca = strtok(NULL, " ");
             char *lin = strtok(NULL, " ");
             char *col = strtok(NULL, " ");
-            
+
             if(cmd != NULL && (!strcmp(cmd, "jogar") || !strcmp(cmd, "j"))){    //Verifica se a opcao eh jogar
                 Block b;
                 if(peca != NULL && strlen(peca) == 2){                          //Verifica se o bloco inserido eh valido
@@ -215,20 +214,23 @@ void playerTurn(Game *g, Player *players, short player_number, char isCheatMode)
                 } else {
                     invalidBlock(0);
                 }
-            } else if((!strcmp(cmd, "passar")) || (!strcmp(cmd, "p"))) {        //verifica se a opcao eh passar
+            } else if(cmd != NULL && (!strcmp(cmd, "passar") || !strcmp(cmd, "p"))) {        //verifica se a opcao eh passar
                 if(g->bag.blocks_number > 0){                                   //verifica se existem pecas na sacola disponiveis
                     completeBlocksNumber(g, &players[player_number]);           //se sim, completa com as pecas que faltam
                 }
-                score += defineScoreFirstMove(g, firstMove);                    //Verifica pontuacao da peca inicial
                 
-                //caso a peca inicial faca parte apenas de uma linha/coluna, subtrai um do valor do score (score eh calculado considerando que faz parte de uma linha e uma coluna)
-                if(!((g->board[firstMove.lin][firstMove.col].relation.horizontal != 0) && (g->board[firstMove.lin][firstMove.col].relation.vertical != 0))){
-                    score--;
-                }
+                if(firstMove.lin != -1 && firstMove.col  != -1){
+                    score += defineScoreFirstMove(g, firstMove);                    //Verifica pontuacao da peca inicial
+                    
+                    //caso a peca inicial faca parte apenas de uma linha/coluna, subtrai um do valor do score (score eh calculado considerando que faz parte de uma linha e uma coluna)
+                    if(!((g->board[firstMove.lin][firstMove.col].relation.horizontal != 0) && (g->board[firstMove.lin][firstMove.col].relation.vertical != 0))){
+                        score--;
+                    }
 
-                players[player_number].score += score;                          //soma o score da rodada ao do jogador
-                showScoreTurn(score, players[player_number]);
-                printf("───────────────────────────────────────────────────\n");
+                    players[player_number].score += score;                          //soma o score da rodada ao do jogador
+                    showScoreTurn(score, players[player_number]);
+                    printf("───────────────────────────────────────────────────\n"); 
+                }
                 return;
             } else {
                 invalidOption(0);
